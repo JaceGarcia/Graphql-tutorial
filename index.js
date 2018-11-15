@@ -17,6 +17,14 @@ const db = {
     ]
 }
 
+class User {
+    constructor (user) {
+        Object.assign(this.user)
+    }
+    get messages () {
+        return db.messages.filter(messages => message.userId === this.id)
+    }
+}
 
 const schema = buildSchema(`
     type Query {
@@ -43,7 +51,7 @@ const schema = buildSchema(`
 `)
 
 const rootValue = {
-    users: () => db.users,
+    users: () => db.users.map(user => new User(user)),
     user: args => db.users.find(user => user.id === args.id),
     messages: () => db.messages,
     addUser: ({email, name}) => {
